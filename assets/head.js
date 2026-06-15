@@ -133,9 +133,12 @@ document.addEventListener("DOMContentLoaded", () => {
   ========================================================= */
   
   document.addEventListener('DOMContentLoaded', function() {
-    const submit = document.querySelector("#contactSubmit");
-    const honeypotOne = document.querySelector("#FestnetzID");
-    const honeypotTwo = document.querySelector("#StadtID");
+    const submit      = document.querySelector("#contactSubmit");
+const honeypotOne = document.querySelector("#FestnetzID");
+const honeypotTwo = document.querySelector("#StadtID");
+
+if (honeypotOne) honeypotOne.setAttribute('autocomplete', 'off');
+if (honeypotTwo) honeypotTwo.setAttribute('autocomplete', 'off');
     
     if (!submit || !honeypotOne || !honeypotTwo) {
       return;
@@ -149,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Zeit-Tracking
     let pageLoadTime = Date.now();
-    const minTime = 3000;
+    const minTime = 1500;
     let formCanSubmit = false;
     let attemptCount = 0;
     const maxAttempts = 3;
@@ -193,18 +196,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return false;
       }
       
-      // Check 3: Zu schnell?
-      if (timeSpent < minTime) {
-        // Timer zurücksetzen für nächsten Versuch
-        pageLoadTime = Date.now();
-        
-        alert("Bitte nehmen Sie sich einen Moment Zeit, um das Formular auszufüllen.");
-        return false;
-      }
+      
       
       // Alle Checks bestanden!
-      formCanSubmit = true;
-      form.submit();
+formCanSubmit = true;
+form.submit();
+// Nach Submission zurücksetzen, damit Honeypot weiter aktiv bleibt
+setTimeout(() => { formCanSubmit = false; attemptCount = 0; }, 2000);
       
       return false;
     });
